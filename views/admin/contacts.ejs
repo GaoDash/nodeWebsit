@@ -1,0 +1,50 @@
+<%- include( './header' ) %>
+<h3 class="page-header"><%= pageHeader %></h3>
+<div class="col-sm-6">
+	<form role="form" onsubmit="return false" id="contacts-form">
+	  <div class="form-group">
+	    <label for="telNo">联系电话</label>
+	    <input type="text" class="form-control" id="telNo" name="telNo" placeholder="输入电话号码" value="<%=data.tel_no%>">
+	  </div>
+	  <div class="form-group">
+	    <label for="qq">联系QQ</label>
+	    <input type="text" class="form-control" id="qq" name="qq" placeholder="输入联系QQ" value="<%=data.qq%>">
+	  </div>
+	  <div class="form-group">
+	    <label for="wechat">微信</label>
+	    <input type="text" class="form-control" id="wechat" name="wechat" placeholder="输入微信号码" value="<%=data.wechat%>">
+	  </div>
+	  <div class="form-group">
+	    <label for="email">邮箱</label>
+	    <input type="text" class="form-control" id="email" name="email" placeholder="输入联系邮箱" value="<%=data.email%>">
+	  </div>
+	  <div class="form-group">
+	    <label for="address">公司地址</label>
+	    <input type="text" class="form-control" id="address" name="address" placeholder="输入联系地址" value="<%=data.address%>">
+	  </div>
+	  <button type="submit" id="save_btn" class="btn btn-info">保&nbsp;&nbsp;存</button>
+	</form>
+</div>
+
+<%- include( './footer' ) %>
+<script type="text/javascript">
+	$(function(){
+		//保存操作
+		$("#save_btn").click(function(){
+			var data = $("#contacts-form").serializeArray();
+
+			$.ajax({
+				url: '/admin/contacts',
+				type: 'post',
+				data: data,
+				success: function(data, status){
+					alert("提交成功");
+					location.reload();	//刷新页面
+				},
+				error: function(data, err){
+					alert(err);
+				}
+			});
+		});
+	});
+</script>

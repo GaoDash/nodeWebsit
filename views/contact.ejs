@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>xxxxx</title>
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width"/>
+    <link rel="stylesheet" href="stylesheets/css/base.css"/>
+    <link rel="stylesheet" href="stylesheets/css/ionicons.min.css"/>
+    <link rel="stylesheet" href="stylesheets/css/style.css"/>
+    <link rel="shortcut icon" href="favicon.ico"/>
+    <!--[if lt IE 9]> 
+    	<script type="text/javascript" src="//cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif-->
+</head>
+<body>
+	<div class="container">
+		<%- include("./header") %> 
+		<div class="content">
+			<div class="banner">
+				
+			</div>
+			<div class="crumbs">
+				<div class="w1000">
+					<p><i class="ion-arrow-right-b"></i>&nbsp;&nbsp;您现在的位置：
+					<a class="prePos" href="./index.html">首页</a>&gt;
+					<a class="curPos">联系我们</a></p>
+				</div>
+			</div>
+			<div class="section">
+				<div class="w1000">
+					<div class="side">
+						<div class="buttons-tab">
+							<ul>
+								<li><a class="active" href="#tab1">联系我们</a></li>
+								<li><a href="#tab2">在线留言</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="det tabs">
+						<div class="tab" id="tab1">
+							<div class="content contact-infor">
+								<ul>
+									<li>
+										<span class="contact-icon phone"></span>
+										<div class="infor">
+											<h1>联系电话</h1>
+											<p><%=data.tel_no%></p>
+										</div>
+									</li>
+									<li>
+										<span class="contact-icon qq"></span>
+										<div class="infor">
+											<h1>QQ</h1>
+											<p><%=data.qq%></p>
+										</div>
+									</li>
+									<li>
+										<span class="contact-icon wechat"></span>
+										<div class="infor">
+											<h1>微信</h1>
+											<p><%=data.wechat%></p>
+										</div>
+									</li>
+									<li>
+										<span class="contact-icon mail"></span>
+										<div class="infor">
+											<h1>邮箱</h1>
+											<p><%=data.email%></p>
+										</div>
+									</li>
+									<li>
+										<span class="contact-icon addr"></span>
+										<div class="infor">
+											<h1>公司地址</h1>
+											<p><%=data.address%></p>
+										</div>
+									</li>
+									
+								</ul>
+							</div>
+						</div>
+						<div class="tab" id="tab2">
+							<div class="content">
+								<div class="remark">
+									<form method="post" id="form1" onsubmit="return false;">
+										<table border="0" cellpadding="0" width="90%">
+											<tr align="center">
+												<td height="60">
+													<input type="text" name="uname" placeholder="姓名">
+												</td>
+												<td>
+													<input type="text" name="utel" placeholder="联系电话">
+												</td>
+												<td>
+													<input type="text" name="uemail" placeholder="邮箱">
+												</td>
+											</tr>
+											<tr align="center">
+												<td colspan="3">
+													<textarea name="ucontent" placeholder="您可以在这里发送有关我们的公司或品牌的任何意见，建议或问题。"></textarea>
+												</td>
+											</tr>
+											<tr align="center">
+												<td colspan="3" height="80">
+													<input type="submit" id="postBtn" class="btn btn2" value="提交">
+												</td>
+											</tr>
+										</table>
+										<p><%= infors %></p>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>	
+		<%- include("./footer") %>
+	</div>
+    <script src="javascripts/jquery-1.12.4.js" type="text/javascript"></script>
+    <script src="javascripts/prefixfree.min.js" type="text/javascript"></script>
+    <script src="javascripts/app.js" type="text/javascript"></script>
+    <script type="text/javascript">
+    	$(function(){
+    		$.Tabs();	//tab启用
+
+    		//提交留言操作
+    		$("#postBtn").click(function(e){
+
+    			if(checkValid()) return;
+
+    			var data = $("#form1").serializeArray();	//表单序列化{"uname": xxx, "upwd": xxxx}
+
+    			$.ajax({
+    				url: '/contact',
+    				type: 'post',
+    				data: data,
+    				success: function(data, status){
+    					if(data == "success"){
+							$("#form1")[0].reset();
+							alert("提交成功");
+						}
+    				},
+    				error: function(data, err){
+    					alert(err);
+    				}
+    			});
+    		});
+
+    		//信息完整性验证
+    		function checkValid(){
+    			var uname = $("input[name=uname]").val(),
+    				utel  = $("input[name=utel]").val(),
+    				ucontent  = $("textarea[name=ucontent]").val();
+
+    			if(!uname){	//名称非空
+    				alert('请输入您的姓名');
+    				return true;
+    			}
+    			if(!utel){	//电话非空
+    				alert('请输入您的联系电话');
+    				return true;
+    			}
+    			if(!ucontent){	//内容非空
+    				alert('请输入留言内容');
+    				return true;
+    			}
+    		}
+    	});
+    </script>
+</body>
+</html>

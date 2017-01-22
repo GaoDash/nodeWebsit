@@ -1,0 +1,44 @@
+<%- include( './header' ) %>
+<h3 class="page-header"><%= pageHeader %></h3>
+<div class="panel panel-default">
+  <div class="panel-heading">全部在线留言(共<%= totalRows %>条)</div>
+  <table class="table table-hover table-bordered">
+      <thead>
+        <tr>
+          <th width="6%" data-field="index" data-formatter="indexFormatter">序号</th> 
+          <th width="10%">姓名</th>
+          <th width="12%">联系电话</th>
+          <th width="12%">邮箱</th>
+          <th width="45%">内容</th>
+          <th width="15%">留言时间</th>
+        </tr>
+      </thead>
+      <tbody id="mesContainer">
+        <!-- 内容填充 -->
+        <%if(data.length){%>
+          <%data.forEach(function(item, index){%>
+            <tr>
+              <td align="center"><%=(curPage-1)*5+(index+1)%></td>
+              <td><%=item.name%></td>
+              <td><%=item.tel%></td>
+              <td><%=item.email%></td>
+              <td><%=item.content%></td>
+              <td><%=item.create_at_string%></td>
+            </tr>
+          <%})%>
+        <%}%>
+      </tbody>
+    </table>
+</div>
+<nav style="position: fixed;bottom: 160px;">
+  <% if(totalPages) { %>
+    <ul class="pagination">
+      <li class="<% if(isFirstPage) {%>disabled<%}%>"><a href="<% if(!isFirstPage){%>/admin/messages?page=<%=(curPage-1)%><%}%>"><span class="glyphicon glyphicon-chevron-left"></span></a></li>
+      <% for(var i=1; i<=totalPages;i++) {%>
+        <li class="<% if(i==curPage) {%>active<%}%>"><a href="/admin/messages?page=<%=i%>"><%=i%></a></li>
+      <%}%>
+      <li class="<% if(isLastPage) {%> disabled <% } %>"><a href="<% if(!isLastPage){%>/admin/messages?page=<%=(curPage+1)%><%}%>"><span class="glyphicon glyphicon-chevron-right"></span></a></li>
+    </ul>
+  <%}%>
+</nav>
+<%- include( './footer' ) %>
