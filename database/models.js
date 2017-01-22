@@ -19,5 +19,9 @@ module.exports = {
 		wechat: String,
 		email: String,
 		address: String
+	},
+	//公司简介
+	companyProfile: {
+		contents: String
 	}
 }

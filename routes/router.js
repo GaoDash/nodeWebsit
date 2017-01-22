@@ -14,7 +14,15 @@ router.route('/news').get(function(req, res) {
 
 /* GET 公司简介 page. */
 router.route('/profile').get(function(req, res) {
-	res.render('profile', { title: '公司简介' });
+	var ComFile = global.dbHandle.getModel('companyProfile');
+	ComFile.findOne(function(err, doc){
+		if(err){
+			console.log(err);
+		}
+		else{
+			res.render('profile', { title: '公司简介',data: doc});
+		}
+	});
 });
 
 /* GET 联系我们 page. */
@@ -29,7 +37,6 @@ router.route('/contact').get(function(req, res) {
 			res.render('contact', 
 			{ 
 				title: '联系我们',
-				pageHeader: '联系信息维护',
 				data: doc
 			});
 		}

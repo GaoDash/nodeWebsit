@@ -101,11 +101,30 @@ router.get('/contacts', function(req, res){
 
 /*GET 公司简介 */
 router.get('/profile', function(req, res){
-	res.render('admin/profile', 
-		{
-			title: 'profile',
-			pageHeader: '简介内容维护'
-		});
+	var ComFile = global.dbHandle.getModel('companyProfile');
+	ComFile.findOne(function(err, doc){
+		if(err){
+			console.log(err);
+		}
+		else{
+			res.render('admin/profile', { title: 'profile',pageHeader: '简介内容维护',data: doc});
+		}
+	});
+}).post('/profile', function(req, res){
+	var ComFile = global.dbHandle.getModel('companyProfile'),
+		content = req.body.content;
+
+	//执行更新DB，如果不存在文档则创建
+	ComFile.update({}, {'contents': content},{upsert:true},function(err){
+		if(err){
+			res.send(500);	//表示失败
+			console.log(err);
+		}
+		else{
+			res.send(200);	//表示提交成功
+		}
+	});
+
 });
 
 /* GET users listing. */

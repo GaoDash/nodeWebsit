@@ -1,25 +1,40 @@
 <%- include( './header' ) %>
+<link href="/tools/ueditor/themes/default/css/ueditor.css" rel="stylesheet">
 <h3 class="page-header"><%=pageHeader%></h3>
-<textarea id="editor_id" name="content" style="width:700px;height:300px;">
-		&lt;strong&gt;HTML内容&lt;/strong&gt;
-</textarea>
+<!-- 加载编辑器的容器 -->
+<form class="col-sm-8" method="post" onsubmit="return false;">
+	<script id="container" name="content" type="text/plain">
+		<%- data.contents %>
+	</script>
+	<button type="submit" class="btn btn-primary" id="submit-btn" style="margin-top:25px">保&nbsp;存</button>
+</form>
 <%- include( './footer' ) %>
-<script type="text/javascript" charset="utf-8" src="/tools/kindeditor-4.1.7/kindeditor-min.js"></script>
-<script type="text/javascript" charset="utf-8" src="/tools/kindeditor-4.1.7/lang/zh_CN.js"></script>
+<script type="text/javascript" charset="utf-8" src="/tools/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="/tools/ueditor/ueditor.all.min.js"></script>
+<!-- 实例化编辑器 -->
 <script type="text/javascript">
-	KindEditor.ready(function(K) {
-		window.editor = K.create('#editor_id',{
-			items:
-			[
-		        'source', '|', 'undo', 'redo', '|', 'preview', 'cut', 'copy', 'paste',
-		        'plainpaste',  '|', 'justifyleft', 'justifycenter', 'justifyright',
-		        'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
-		        'superscript', 'clearhtml', 'quickformat', 'selectall', '|',  
-		        'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
-		        'italic', 'lineheight', 'removeformat', '|'
-			],
-			
+ 
+	var ue = UE.getEditor('container', {
+	    toolbars: [
+	        ['source', 'undo', 'redo', 'bold','indent','preview','fontfamily','fontsize','paragraph','justifyleft','justifyright','justifycenter','forecolor','backcolor','lineheight']
+	    ],
+	    autoHeightEnabled: false,
+	    initialFrameHeight: 360,
+	});
 
+	$("#submit-btn").click(function(){
+		var data = UE.getEditor('container').getContent();
+
+    	$.ajax({
+			url: '/admin/profile',
+			type: 'post',
+			data: {'content': data},
+			success: function(data, status){
+				alert("提交成功");
+			},
+			error: function(data, err){
+				alert(err);
+			}
 		});
 	});
 </script>
