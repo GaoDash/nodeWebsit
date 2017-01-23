@@ -1,8 +1,9 @@
 module.exports = {
+	//管理员用户
 	user:{
 		name: {type:String,required:true},
 		password: {type:String,required:true},
-		regDate: Date
+		update_at: {type: Date,default: Date.now}
 	},
 	//留言信息表
 	message: {

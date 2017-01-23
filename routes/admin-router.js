@@ -4,12 +4,12 @@ var router = express.Router();
 var moment = require('moment');
 
 /* GET dashboard listing. */
-router.get('/', function(req, res) {
+router.get('/', checkLogin).get('/', function(req, res) {
 	res.render('admin/dashboard', { title: 'dashboard' });
 });
 
 /* GET 留言列表 listing. */
-router.get('/messages',function(req, res) {
+router.get('/messages', checkLogin).get('/messages',function(req, res) {
 	var Messages = global.dbHandle.getModel('message'),
 		rows = 5,
 		totalRows = 1,
@@ -61,7 +61,7 @@ router.get('/messages',function(req, res) {
 });
 
 /* GET 联系方式 listing. */
-router.get('/contacts', function(req, res){
+router.get('/contacts', checkLogin).get('/contacts', function(req, res){
 	var ContactsInfor = global.dbHandle.getModel('contactsInfor');
 	ContactsInfor.findOne(function(err, doc){
 		if(err){
@@ -77,7 +77,6 @@ router.get('/contacts', function(req, res){
 			});
 		}
 	});
-
 }).post('/contacts', function(req, res){
 	var ContactsInfor = global.dbHandle.getModel('contactsInfor'),
 		telNo = req.body.telNo,
@@ -100,7 +99,7 @@ router.get('/contacts', function(req, res){
 });
 
 /*GET 公司简介 */
-router.get('/profile', function(req, res){
+router.get('/profile', checkLogin).get('/profile', function(req, res){
 	var ComFile = global.dbHandle.getModel('companyProfile');
 	ComFile.findOne(function(err, doc){
 		if(err){
@@ -124,12 +123,52 @@ router.get('/profile', function(req, res){
 			res.send(200);	//表示提交成功
 		}
 	});
-
 });
 
-/* GET users listing. */
+/* GET 登录页面 */
 router.get('/login', function(req, res) {
-  res.render('admin/login', {});
+	res.render('admin/login', {});
+}).post('/login', function(req, res){
+	var User = global.dbHandle.getModel('user'),
+		uname = req.body.uname,
+		upwd = req.body.upwd;
+
+	User.findOne({name: uname}, function(err, doc){
+		if(err){
+			res.send(500);
+			console.log(err);
+		}
+		else if(!doc){
+			req.flash('infor', '用户不存在!'); 
+			return res.redirect('./login');//用户不存在则跳转到登录页
+		}
+		else{
+			if(doc.password !== upwd){
+				req.flash('infor', '密码错误!'); 
+				res.send(404);
+			}else{
+				console.log(doc);
+				req.session.user = doc;	//信息匹配成功，则将此对象（匹配到的user) 赋给session.user  并返回成功
+				req.flash('infor', '登录成功!'); 
+				return res.redirect('/admin');
+			}
+		}
+	});
 });
+
+/* logout 退出*/
+router.get('/logout', function(req,res){
+	req.session.user = null;
+	req.flash('infor', '登出成功！');
+	res.redirect('/');	//登出成功后跳转到主页
+});
+
+/*检查登录状态*/
+function checkLogin(req, res, next){
+	if(!req.session.user) {
+		return res.redirect('/admin/login');	//return 表示不执行next();
+	}
+	next();
+}
 
 module.exports = router;

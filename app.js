@@ -38,7 +38,7 @@ app.use(express.static(path.join(__dirname, 'public')));	//设置public文件夹
 app.use(session({
 	secret: 'secret',	//Cookie 加密
 	cookie: {
-		maxAge: 1000*60*60*24*30	//30 days
+		maxAge: 1000*60*60	//1 hour
 	}
 }));
 
@@ -48,7 +48,7 @@ app.use(flash());
 //设置flash session
 app.use(function(req,res,next){
 	res.locals.user = req.session.user; //session中获取user对象在页面能够直接获取
-	res.locals.infors = req.flash('infor');
+	res.locals.infor = req.flash('infor').toString();
 
 	next();
 });

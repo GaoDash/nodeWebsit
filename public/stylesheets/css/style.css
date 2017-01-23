@@ -5,8 +5,9 @@
 .sub-menu li{float: left;padding: 0 15px;font-size: 14px;}
 .sub-menu li:first-child{border-right: 1px solid #ccc}
 .main-menu{border-top: 1px solid #e4e4e4;border-bottom: 3px solid #065aba;height: 52px;line-height:48px;box-sizing: border-box;}
-.main-menu li{display: block;width: 142px;float: left;text-align: center;font-size: 16px;border-left: 1px solid #e4e4e4;cursor: pointer;}
-.main-menu li:last-child{border-right: 1px solid #e4e4e4;box-sizing: border-box;}
+.main-menu>div.w1000{border-left: 1px solid #e4e4e4;border-right: 1px solid #e4e4e4;}
+.main-menu li{display: block;width: 142px;float: left;text-align: center;font-size: 16px;cursor: pointer;}
+.main-menu li+li{border-left: 1px solid #e4e4e4;}
 .main-menu li a{display: block;}
 .main-menu li a.active{color: #fff;background-color: #065aba;}
 /*主页content*/
@@ -21,7 +22,7 @@
 .news-list li:nth-child(2n+1){margin-right: 40px;}
 .shortInfor{float: right;padding: 20px 15px;width: 310px;}
 .shortInfor h1{font-size: 16px;color: #454545}
-.shortInfor p{color: #616161;word-break: break-all;overflow: hidden;text-overflow: ellipsis;display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;margin: 10px 0;line-height: 1.5}
+.shortInfor p{color: #616161;height:41px;word-break: break-all;overflow: hidden;text-overflow: ellipsis;display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;margin: 10px 0;line-height: 1.5}
 .shortInfor .btn4{border:1px solid #b1b1b1;padding: 3px 10px;font-size: 12px;border-radius: 5px;color: #b1b1b1}
 
 .service{padding:45px 0;background-color: #f3f3f3;border-top: 1px solid #d1d1d1;border-bottom: 1px solid #d1d1d1;}
@@ -81,7 +82,7 @@
 .news-area{overflow: hidden;max-height: 670px}
 .news-area li{border-bottom: 1px dashed #ccc;display: block;line-height: 15px;padding: 15px 5px}
 .news-area li h2{display:inline-block;*display:inline;zoom:1;text-align: left;font-size: 15px;}
-.news-area li p{width: 485px;font-size:13px;display: block;color: #616161;word-break: break-all;overflow: hidden;text-overflow: ellipsis;display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;margin: 15px 0;line-height: 1.8;}
+.news-area li p{width: 485px;height: 43px;font-size:13px;display: block;color: #616161;word-break: break-all;overflow: hidden;text-overflow: ellipsis;display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;margin: 15px 0;line-height: 1.8;}
 .news-area li span{float: right}
 .news-area a.more{padding: 3px 6px;background-color: #ebebeb;color: #666;}
 

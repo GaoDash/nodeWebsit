@@ -32,18 +32,27 @@
 
   <body>
     <div class="container">
-      <form class="form-signin" role="form">
+      <form class="form-signin" role="form" method="post">
         <h2 class="form-signin-heading">请登录</h2>
-        <input type="email" class="form-control" placeholder="用户名" required="" autofocus="">
-        <input type="password" class="form-control" placeholder="密码" required="">
+        <input type="text" class="form-control" placeholder="用户名" name="uname" required>
+        <input type="password" class="form-control" placeholder="密码" name="upwd" required>
         <div class="checkbox">
           <label>
             <input type="checkbox" value="remember-me"> 记住我
           </label>
         </div>
         <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
+        
+        <% if(infor) {%>
+          <div class="alert alert-danger alert-dismissible fade in" role="alert" style="margin-top:20px">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <strong>错误：</strong><%-infor%>
+          </div>
+        <%}%>
       </form>
-    </div> <!-- /container -->
 
+    </div> <!-- /container -->
+    <script src="/javascripts/jquery-1.12.4.js"></script>
+    <script src="/javascripts/bootstrap.min.js"></script>
 </body>
 </html>
