@@ -1,4 +1,50 @@
 <%- include( './header' ) %>
+<link rel="stylesheet" type="text/css" href="/tools/bootstrap-fileinput/css/fileinput.css">
 <h3 class="page-header">仪表盘</h3>
-
+<form>
+	<div class="row">
+		<div class="form-group col-sm-4">
+			<label for="exampleInputFile">LOGO图片上传</label>
+			<input type="file" id="fileinput1" class="file" data-preview-file-type="text">
+		</div>
+	</div>
+	<div class="row">
+		<div class="form-group col-sm-4">
+			<label for="exampleInputFile">二维码图片上传</label>
+			<input type="file" id="fileinput2" class="file" >
+		</div>
+	</div>
+</form>
 <%- include( './footer' ) %>
+<script type="text/javascript" src="/tools/bootstrap-fileinput/js/fileinput.js"></script>
+<script type="text/javascript" src="/tools/bootstrap-fileinput/js/locales/zh.js"></script>
+<script type="text/javascript">
+	//初始化fileinput控件（第一次初始化）
+	function initFileInput (ctrlName, uploadUrl){
+		$(ctrlName).fileinput({
+			language: 'zh', //设置语言
+			uploadUrl: uploadUrl, //上传的地址
+			allowedFileExtensions : ['jpg', 'png','gif'],//接收的文件后缀
+			maxFileCount: 1,
+			enctype: 'multipart/form-data',
+			showUpload: false, //是否显示上传按钮
+			showCaption: false, //是否显示标题
+			showClose: false,
+			//showRemove: false,
+			browseClass: "btn btn-info", //按钮样式
+			previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
+			initialPreview: "<img src='/uploads/news-list01.png' class='file-preview-image' alt='Desert'>",	//初始显示
+			initialPreviewConfig:[{
+				caption: 'news-list01.jpg',
+				url: '/admin/images/delete',	//删除图片的URL
+				key: 100,
+				extra: {id: 100}
+			}],
+			initialPreviewShowDelete: true,
+			elErrorContainer: '#No'
+		});
+	}
+
+	initFileInput("#fileinput1", "/User/EditPortrait");
+	//initFileInput("#fileinput2", "/User/EditPortrait");
+</script>

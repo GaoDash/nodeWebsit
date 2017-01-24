@@ -23,6 +23,7 @@ module.exports = {
 	},
 	//公司简介
 	companyProfile: {
+		logo: String,
 		contents: String
 	}
 }

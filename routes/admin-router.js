@@ -145,7 +145,7 @@ router.get('/login', function(req, res) {
 		else{
 			if(doc.password !== upwd){
 				req.flash('infor', '密码错误!'); 
-				res.send(404);
+				return res.redirect('./login');//用户不存在则跳转到登录页
 			}else{
 				console.log(doc);
 				req.session.user = doc;	//信息匹配成功，则将此对象（匹配到的user) 赋给session.user  并返回成功

@@ -6,11 +6,13 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var flash = require('connect-flash');
 var ueditor = require("ueditor");
+var settings = require("./settings");
 
 //加载数据库mongoose
 var mongoose = require('mongoose');
 //引入session模块
 var session = require('express-session');
+var MongoStore = require('connect-mongo')(session);
 
 var router = require('./routes/router');
 var admin = require('./routes/admin-router');
@@ -24,7 +26,7 @@ app.set('view engine', 'ejs');	//设置视图模板引擎为 ejs
 //app.set('view engine', 'html');
 
 global.dbHandle = require('./database/dbHandle');
-global.db = mongoose.connect('mongodb://127.0.0.1:27017/nodedb');
+global.db = mongoose.connect(settings.url);
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -36,10 +38,15 @@ app.use(express.static(path.join(__dirname, 'public')));	//设置public文件夹
 
 //session处理
 app.use(session({
-	secret: 'secret',	//Cookie 加密
-	cookie: {
-		maxAge: 1000*60*60	//1 hour
-	}
+	secret: settings.cookieSecret,	//Cookie 加密
+  key: settings.db,
+	cookie: {maxAge: 1000*60*60},  //1 hour
+  store: new MongoStore({       //cookie信息保存在DB中，用处暂不清楚
+    /*db: settings.db,
+    host: settings.host,
+    port: settings.port*/
+    url: settings.url
+  })
 }));
 
 //使用flash

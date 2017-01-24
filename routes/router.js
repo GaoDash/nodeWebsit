@@ -30,10 +30,10 @@ router.route('/contact').get(function(req, res) {
 	var ContactsInfor = global.dbHandle.getModel('contactsInfor');
 	ContactsInfor.findOne(function(err, doc){
 		if(err){
+			res.send(500);
 			console.log(err);
 		}
 		else{
-			console.log(doc);
 			res.render('contact', 
 			{ 
 				title: '联系我们',
@@ -41,6 +41,8 @@ router.route('/contact').get(function(req, res) {
 			});
 		}
 	});
+	
+/*在线留言*/
 }).post(function(req, res){
 	var Message = global.dbHandle.getModel('message'),
 		uname = req.body.uname,
