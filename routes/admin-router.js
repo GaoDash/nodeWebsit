@@ -5,7 +5,7 @@ var moment = require('moment');
 
 /* GET dashboard listing. */
 router.get('/', checkLogin).get('/', function(req, res) {
-	res.render('admin/dashboard', { title: 'dashboard' });
+	res.render('admin/dashboard', { title: 'dashboard',uploadUrl:'/admin/EditPortrait' });
 });
 
 /* GET 留言列表 listing. */

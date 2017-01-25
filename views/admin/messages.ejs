@@ -30,7 +30,7 @@
       </tbody>
     </table>
 </div>
-<nav style="position: fixed;bottom: 160px;">
+<nav>
   <% if(totalPages) { %>
     <ul class="pagination">
       <li class="<% if(isFirstPage) {%>disabled<%}%>"><a href="<% if(!isFirstPage){%>/admin/messages?page=<%=(curPage-1)%><%}%>"><span class="glyphicon glyphicon-chevron-left"></span></a></li>
@@ -42,3 +42,5 @@
   <%}%>
 </nav>
 <%- include( './footer' ) %>
+</body>
+</html>

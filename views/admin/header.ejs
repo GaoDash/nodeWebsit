@@ -8,14 +8,17 @@
 
         <!-- Bootstrap core CSS -->
         <link href="/stylesheets/css/bootstrap.min.css" rel="stylesheet">
-
+        
+        <%if(title=='dashboard'){%>
+        <!-- 图片上传组件 -->
+        <link href="/tools/bootstrap-fileinput/css/fileinput.min.css" rel="stylesheet"></link>
+        <%}%>
         <!-- Custom styles for this template -->
         <link href="/stylesheets/css/dashboard.css" rel="stylesheet">
         <style type="text/css">
           th,td{vertical-align: middle!important;}
           th{text-align: center!important;}
         </style>
-
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
           <script src="http://cdn.bootcss.com/html5shiv/3.7.0/html5shiv.js"></script>
@@ -24,7 +27,6 @@
   </head>
 
   <body>
-
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container-fluid">
         <div class="navbar-header">

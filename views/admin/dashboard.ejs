@@ -1,50 +1,44 @@
 <%- include( './header' ) %>
-<link rel="stylesheet" type="text/css" href="/tools/bootstrap-fileinput/css/fileinput.css">
 <h3 class="page-header">仪表盘</h3>
-<form>
-	<div class="row">
-		<div class="form-group col-sm-4">
-			<label for="exampleInputFile">LOGO图片上传</label>
-			<input type="file" id="fileinput1" class="file" data-preview-file-type="text">
-		</div>
-	</div>
-	<div class="row">
-		<div class="form-group col-sm-4">
-			<label for="exampleInputFile">二维码图片上传</label>
-			<input type="file" id="fileinput2" class="file" >
+<form class="form-horizontal">
+	<div class="form-group">
+		<label class="col-sm-2 control-label">LOGO图片上传</label>
+		<div class="col-sm-3">
+			<input id="input-logo" type="file" class="form-control file" data-preview-file-type="text">
 		</div>
 	</div>
 </form>
 <%- include( './footer' ) %>
-<script type="text/javascript" src="/tools/bootstrap-fileinput/js/fileinput.js"></script>
-<script type="text/javascript" src="/tools/bootstrap-fileinput/js/locales/zh.js"></script>
+<!-- 图片上传组件 -->
+<script src="/tools/bootstrap-fileinput/js/fileinput.min.js"></script>
+<script src="/tools/bootstrap-fileinput/js/locales/zh.js"></script>
 <script type="text/javascript">
-	//初始化fileinput控件（第一次初始化）
-	function initFileInput (ctrlName, uploadUrl){
-		$(ctrlName).fileinput({
-			language: 'zh', //设置语言
-			uploadUrl: uploadUrl, //上传的地址
-			allowedFileExtensions : ['jpg', 'png','gif'],//接收的文件后缀
-			maxFileCount: 1,
-			enctype: 'multipart/form-data',
-			showUpload: false, //是否显示上传按钮
-			showCaption: false, //是否显示标题
-			showClose: false,
-			//showRemove: false,
-			browseClass: "btn btn-info", //按钮样式
-			previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
-			initialPreview: "<img src='/uploads/news-list01.png' class='file-preview-image' alt='Desert'>",	//初始显示
-			initialPreviewConfig:[{
-				caption: 'news-list01.jpg',
-				url: '/admin/images/delete',	//删除图片的URL
-				key: 100,
-				extra: {id: 100}
-			}],
-			initialPreviewShowDelete: true,
-			elErrorContainer: '#No'
-		});
+	var BASE_UPLOAD_URL = "/admin/image/add",
+		BASE_DELETE_URL = "/admin/image/delete";
+	function createFileinput(id, previewUrl, previewConfig){
+		var $e = $("#" + id),
+			previewImg = "<img src='" + previewUrl + "' class='file-preview-image'>";
+		$e.fileinput(
+			{
+				language: "zh",
+				showUpload: true,//是否显示上传按钮
+				showCaption: false,//是否显示标题
+				showRemove: false,//是否显示删除按钮
+				showClose: false,//是否显示关闭按钮
+				browseClass: "btn btn-info", //按钮样式
+				uploadAsync: true,	//是否是异步上传
+				uploadUrl: BASE_UPLOAD_URL, //上传的地址
+				initialPreview: previewImg,	//设置初始预览的图片
+				initialPreviewConfig: [previewConfig],
+				initialPreviewShowDelete: true,	//初始预览图片是否显示删除按钮
+				allowedFileTypes: ['image'],	//允许上传的文件类型
+				showAjaxErrorDetails: false,	//是否详细显示错误信息
+				dropZoneEnabled: true	//允许是否可拖拽图片
+			}
+		);
 	}
-
-	initFileInput("#fileinput1", "/User/EditPortrait");
-	//initFileInput("#fileinput2", "/User/EditPortrait");
+	//LOGO上传设置
+	createFileinput("input-logo", "/uploads/logo.png", {caption: "logo.p1ng",url: BASE_DELETE_URL,key: 100,extra: {id: 100}});
 </script>
+</body>
+</html>
