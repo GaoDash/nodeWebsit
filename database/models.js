@@ -23,7 +23,14 @@ module.exports = {
 	},
 	//公司简介
 	companyProfile: {
-		logo: { id:String, caption: String, url: String },	//logo图片
 		contents: String
+	},
+	//图片表
+	images: {
+		id: String,
+		caption: String,
+		url: String,
+		description: String
 	}
+
 }

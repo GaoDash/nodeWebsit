@@ -3,5 +3,8 @@ module.exports = {
 	db: 'nodedb',
 	host: '127.0.0.1',
 	port: 27017,
-	url: 'mongodb://127.0.0.1:27017/nodedb'
+	url: 'mongodb://127.0.0.1:27017/nodedb',
+	upload: {
+		path: process.cwd() + '/public/uploads'
+	}
 };

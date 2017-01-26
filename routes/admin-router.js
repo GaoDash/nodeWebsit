@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var upload = require('../fileupload');
 
 var moment = require('moment');
 
@@ -123,6 +124,14 @@ router.get('/profile', checkLogin).get('/profile', function(req, res){
 			res.send(200);	//表示提交成功
 		}
 	});
+});
+
+/*图片上传*/
+router.post('/images/upload', upload.single('file'), function(req, res){
+	var Images = global.dbHandle.getModel('images');
+	console.log(req.body);
+	console.log(req.file);
+	res.send(200);
 });
 
 /* GET 登录页面 */

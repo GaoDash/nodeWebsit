@@ -1,44 +1,116 @@
 <%- include( './header' ) %>
 <h3 class="page-header">仪表盘</h3>
-<form class="form-horizontal">
+<form class="form-horizontal" enctype="multipart/form-data">
 	<div class="form-group">
 		<label class="col-sm-2 control-label">LOGO图片上传</label>
-		<div class="col-sm-3">
-			<input id="input-logo" type="file" class="form-control file" data-preview-file-type="text">
+	
+		<div class="col-sm-4" id="uploader_logo" style="text-align:center">
+			<div id="fileList1" class="uploader-list">
+				<div class="file-item thumbnail">
+					<img src="/uploads/logo.png">
+					<div class="info">logo.png</div>
+				</div>
+			</div>
+			<div id="filePicker1">选择LOGO图片</div>
 		</div>
 	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label">二维码图片上传</label>
+	
+		<div class="col-sm-4" id="uploader_logo" style="text-align:center">
+			<div id="fileList2" class="uploader-list">
+				<div class="file-item thumbnail">
+					<img src="/uploads/logo.png">
+					<div class="info">logo.png</div>
+				</div>
+			</div>
+			<div id="filePicker2">选择二维码图片</div>
+		</div>
+	</div>
+	<script type="text/template" id="noteTml">
+		<div class="alert alert-res" role="alert">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			<strong>msg</strong>
+		</div>
+	</script>
 </form>
 <%- include( './footer' ) %>
 <!-- 图片上传组件 -->
-<script src="/tools/bootstrap-fileinput/js/fileinput.min.js"></script>
-<script src="/tools/bootstrap-fileinput/js/locales/zh.js"></script>
+<script src="/tools/webuploader/webuploader.min.js"></script>
 <script type="text/javascript">
-	var BASE_UPLOAD_URL = "/admin/image/add",
-		BASE_DELETE_URL = "/admin/image/delete";
-	function createFileinput(id, previewUrl, previewConfig){
-		var $e = $("#" + id),
-			previewImg = "<img src='" + previewUrl + "' class='file-preview-image'>";
-		$e.fileinput(
-			{
-				language: "zh",
-				showUpload: true,//是否显示上传按钮
-				showCaption: false,//是否显示标题
-				showRemove: false,//是否显示删除按钮
-				showClose: false,//是否显示关闭按钮
-				browseClass: "btn btn-info", //按钮样式
-				uploadAsync: true,	//是否是异步上传
-				uploadUrl: BASE_UPLOAD_URL, //上传的地址
-				initialPreview: previewImg,	//设置初始预览的图片
-				initialPreviewConfig: [previewConfig],
-				initialPreviewShowDelete: true,	//初始预览图片是否显示删除按钮
-				allowedFileTypes: ['image'],	//允许上传的文件类型
-				showAjaxErrorDetails: false,	//是否详细显示错误信息
-				dropZoneEnabled: true	//允许是否可拖拽图片
+	var BASE_UPLOAD_URL = "/admin/images/upload",
+		BASE_DELETE_URL = "/admin/images/delete";
+	
+	function createUploader(pick_id, file_list){
+		var uploader = WebUploader.create({
+		    // 选完文件后，是否自动上传。
+		    auto: true,
+		    // swf文件路径
+		    swf: '/tools/webuploader/Uploader.swf',
+		    // 文件接收服务端。
+		    server: BASE_UPLOAD_URL,
+		    // 选择文件的按钮。可选。
+		    // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+		    pick: pick_id,
+		    // 只允许选择图片文件。
+		    accept: {
+		        title: 'Images',
+		        extensions: 'gif,jpg,jpeg,bmp,png',
+		        mimeTypes: 'image/*'
+		    },
+		    thumb: {
+			    width: 1,
+			    height: 1,
+			    // 图片质量，只有type为`image/jpeg`的时候才有效。
+			    quality: 90,
+			    // 是否允许放大，如果想要生成小图的时候不失真，此选项应该设置为false.
+			    allowMagnify: true,
+			    // 是否允许裁剪。
+			    crop: false,
+			    // 为空的话则保留原有图片格式。
+			    // 否则强制转换成指定的类型。
+			    type: 'image/jpeg'
 			}
-		);
+		});
+		// 当有文件添加进来的时候
+		uploader.on( 'fileQueued', function( file ) {
+		    var $li = $(
+		            '<div id="' + file.id + '" class="file-item thumbnail">' +
+		                '<img>' +
+		                '<div class="info">' + file.name + '</div>' +
+		            '</div>'
+		            ),
+		        $img = $li.find('img');
+
+		    // $list为容器jQuery实例
+		    $(file_list).html( $li );
+		    // 创建缩略图
+		    // 如果为非图片文件，可以不用调用此方法。
+		    // thumbnailWidth x thumbnailHeight 为 100 x 100
+		    uploader.makeThumb( file, function( error, src ) {
+		        if ( error ) {
+		            $img.replaceWith('<span>不能预览</span>');
+		            return;
+		        }
+		        $img.attr( 'src', src );
+		    });
+		});
+
+		// 文件上传成功
+		uploader.on( 'uploadSuccess', function( file ) {
+	    	var str = $("#noteTml").html().replace(/res/, "success").replace(/msg/, "上传成功！");
+	    	$(file_list).append(str);
+		});
+		// 文件上传失败，显示上传出错。
+		uploader.on( 'uploadError', function( file ) {
+	    	var str = $("#noteTml").html().replace(/res/, "danger").replace(/msg/, "上传失败！");
+	    	$(file_list).append(str);
+		});
 	}
-	//LOGO上传设置
-	createFileinput("input-logo", "/uploads/logo.png", {caption: "logo.p1ng",url: BASE_DELETE_URL,key: 100,extra: {id: 100}});
+	createUploader("#filePicker1", "#fileList1");
+	createUploader("#filePicker2", "#fileList2");
 </script>
 </body>
 </html>
